@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: restaurant_voice_agent_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: restaurant_voice_agent
+      POSTGRES_PASSWORD: restaurant_voice_agent
+      POSTGRES_DB: restaurant_voice_agent
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U restaurant_voice_agent -d restaurant_voice_agent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - restaurant_voice_agent_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  restaurant_voice_agent_postgres_data:
